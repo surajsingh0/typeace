@@ -37,3 +37,19 @@ export const calculateTimeDifferenceInMinutes = (
 
     return timeDifferenceInMinutes;
 };
+
+export const calculateAccuracy = (totalCharacters: number, errors: number): number  => {
+    if (totalCharacters <= 0) {
+        throw new Error("Total characters must be greater than zero.");
+    }
+
+    if (errors < 0) {
+        throw new Error("Number of errors cannot be negative.");
+    }
+
+    // Calculate accuracy
+    const correctCharacters = totalCharacters - errors;
+    const accuracy = (correctCharacters / totalCharacters) * 100;
+
+    return accuracy;
+}

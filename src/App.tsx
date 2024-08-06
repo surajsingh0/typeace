@@ -5,6 +5,7 @@ import {
     getRandomParagraph,
     calculateWPM,
     calculateTimeDifferenceInMinutes,
+    calculateAccuracy,
 } from "./resources";
 
 function App() {
@@ -15,6 +16,8 @@ function App() {
     const [restart, setRestart] = useState(false);
     const [time, setTime] = useState(0);
     const [wpm, setWpm] = useState(0);
+    const [wrongs, setWrongs] = useState(0);
+    const [accuracy, setAccuracy] = useState(0);
 
     useEffect(() => {
         getRandomParagraph().then((paragraph) => setParagraph(paragraph));
@@ -49,6 +52,7 @@ function App() {
             if (true_letter?.textContent === " ") {
                 true_letter?.classList.add("bg-red-200");
             }
+            setWrongs(wrongs + 1);
         }
         setCurrentLetter(currentLetter + 1);
 
@@ -74,6 +78,8 @@ function App() {
         setCurrentLetter(0);
         setWordsTyped(0);
         setWpm(0);
+        setWrongs(0);
+        setAccuracy(0);
     };
 
     useEffect(() => {
@@ -92,6 +98,8 @@ function App() {
         const wpm = calculateWPM(wordsTyped, timeDifferenceInSeconds);
         setWpm(wpm);
 
+        setAccuracy(calculateAccuracy(currentLetter + 1, wrongs));
+
         return () => {
             window.removeEventListener("keydown", handleTyping);
             getLetter(currentLetter)?.classList.remove("underline");
@@ -101,7 +109,7 @@ function App() {
 
     return (
         <div className="w-screen h-screen flex flex-col justify-center items-center gap-2 font-mono">
-            <div className="flex justify-between w-1/2">
+            <div className="flex justify-between items-center w-1/2">
                 <div className="flex items-center gap-1">
                     <button
                         onClick={handleStart}
@@ -117,11 +125,14 @@ function App() {
                     />
                 </div>
                 <p
-                    className={`text-3xl font-bold ${
-                        !started ? "text-slate-400" : ""
+                    className={`text-2xl font-bold flex gap-6 ${
+                        !started && !restart
+                            ? "text-slate-200"
+                            : "text-slate-500"
                     }`}
                 >
-                    WPM: {wpm.toFixed(0)}
+                    <span>Accuracy: {accuracy.toFixed(2)}%</span>
+                    <span>WPM: {wpm.toFixed(0)}</span>
                 </p>
             </div>
             <Passage

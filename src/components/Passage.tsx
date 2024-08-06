@@ -7,7 +7,7 @@ interface Props {
 const Passage = ({ paragraph, handleAddRef, started }: Props, {}) => {
     return (
         <p
-            className={`text-lg w-1/2 ${
+            className={`text-xl w-1/2 ${
                 started ? "text-slate-400 font-bold" : ""
             }`}
         >
