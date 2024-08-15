@@ -56,7 +56,10 @@ function App() {
         }
         setCurrentLetter(currentLetter + 1);
 
-        if (!/^[a-zA-Z]$/.test(true_letter?.textContent || "")) {
+        if (
+            true_letter?.textContent === " " ||
+            true_letter?.textContent === "."
+        ) {
             setWordsTyped(wordsTyped + 1);
         }
 
