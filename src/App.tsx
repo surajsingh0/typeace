@@ -38,7 +38,7 @@ function App() {
         let true_letter = getLetter(currentLetter);
 
         const allowedCharPattern =
-            /^[a-zA-Z.,!?;:(){}[\]'"`~@#$%^&*_\-+=/|\\<> ]$/;
+            /^[a-zA-Z0-9.,!?;:(){}[\]'"`~@#$%^&*_\-+=/|\\<> ]$/;
 
         if (!allowedCharPattern.test(letter)) return;
 
@@ -56,14 +56,12 @@ function App() {
         }
         setCurrentLetter(currentLetter + 1);
 
-        if (
-            true_letter?.textContent === " " ||
-            true_letter?.textContent === "."
-        ) {
-            setWordsTyped(wordsTyped + 1);
+        if (true_letter?.textContent === " ") {
+            setWordsTyped((prev) => prev + 1);
         }
 
         if (paragraph.length > 0 && currentLetter + 1 === paragraph.length) {
+            setWordsTyped((prev) => prev + 1);
             setStarted(false);
             setRestart(true);
         }
