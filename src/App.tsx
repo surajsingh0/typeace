@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { IoReload } from "react-icons/io5";
+import { FaMoon, FaSun } from "react-icons/fa";
 import Passage from "./components/Passage";
 import {
     getRandomParagraph,
@@ -10,6 +11,7 @@ import {
 
 function App() {
     const [paragraph, setParagraph] = useState<string>("");
+    const [dark, setDark] = useState(false);
     const [currentLetter, setCurrentLetter] = useState(0);
     const [wordsTyped, setWordsTyped] = useState(0);
     const [started, setStarted] = useState(false);
@@ -109,7 +111,11 @@ function App() {
     }, [currentLetter, started]);
 
     return (
-        <div className="w-screen h-screen flex flex-col justify-center items-center gap-2 font-mono">
+        <div
+            className={`w-screen h-screen flex flex-col justify-center items-center gap-2 font-mono transition-all duration-300 ${
+                dark && "bg-slate-900"
+            }`}
+        >
             <div className="flex justify-between items-center w-1/2">
                 <div className="flex items-center gap-1">
                     <button
@@ -127,7 +133,11 @@ function App() {
                 </div>
                 <p
                     className={`text-2xl font-bold flex gap-6 ${
-                        !started && !restart
+                        dark
+                            ? !started && !restart
+                                ? "text-slate-800"
+                                : "text-slate-200"
+                            : !started && !restart
                             ? "text-slate-200"
                             : "text-slate-500"
                     }`}
@@ -141,7 +151,17 @@ function App() {
                 handleAddRef={handleAddRef}
                 key={paragraph}
                 started={started}
+                dark={dark}
             />
+            <div className="fixed right-2 top-2 hover:scale-110 transition-all duration-300">
+                <button onClick={() => setDark(!dark)}>
+                    {dark ? (
+                        <FaSun size={24} color="lightgray" />
+                    ) : (
+                        <FaMoon size={24} color="#65788a" />
+                    )}
+                </button>
+            </div>
         </div>
     );
 }
